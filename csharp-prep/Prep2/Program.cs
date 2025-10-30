@@ -6,6 +6,7 @@ class Program
     {
         int grade;
         string letterGrade = "";
+        bool pass = true;
         Console.Write("Enter your grade (0-100): ");
         grade = Convert.ToInt16(Console.ReadLine());
         if (grade >= 90)
@@ -23,10 +24,12 @@ class Program
         else if (grade >= 60)
         {
             letterGrade += 'D';
+            pass = false;
         }
         else
         {
             letterGrade += 'F';
+            pass = false;
         }
         if (letterGrade != "F")
         {
@@ -34,11 +37,20 @@ class Program
             {
                 letterGrade += '+';
             }
-            else if (grade%10 < 3)
+            else if (grade % 10 < 3)
             {
                 letterGrade += '-';
             }
         }
-        Console.WriteLine(letterGrade);
+
+        Console.WriteLine($"Your letter grade is {letterGrade}.");
+        if (pass)
+        {
+            Console.WriteLine("Congratulations you passed!");
+        }
+        else
+        {
+            Console.WriteLine("Unfortunately you didn't pass. Better luck next time.");
+        }
     }
 }
