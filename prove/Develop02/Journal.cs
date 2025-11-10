@@ -2,32 +2,18 @@ using System.IO;
 
 class Journal
 {
-
-    Random rand = new Random();
     public string _userName = "";
     string _prevUser = "";
-    public string _date = "";
 
     public List<string> _dateHist = new List<string>();
 
-    public string[] _promptBank =
-    {
-        "What wasted the most of my time today? ",
-        "What went well today? ",
-        "What made today different? ",
-        "Why didn't the day go according to plan? ",
-        "What would the current you say to the you from this morning? "
-    };
     List<string> _promptHist = new List<string>();
     List<string> _responseHist = new List<string>();
-    public void GetResponse()
+    public void StoreResponse(Entry e)
     {
-        _date = DateTime.Now.ToString("MM/dd/yyyy");
-        _dateHist.Add(_date);
-        string prompt = _promptBank[rand.Next(5)];
-        _promptHist.Add(prompt);
-        Console.Write(prompt);
-        _responseHist.Add(Console.ReadLine());
+        _dateHist.Add(e._date);
+        _promptHist.Add(e._prompt);
+        _responseHist.Add(e._response);
 
     }
     public void Display()
