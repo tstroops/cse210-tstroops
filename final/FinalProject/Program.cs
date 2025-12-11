@@ -1,17 +1,33 @@
 using System;
 using System.Transactions;
+using Microsoft.VisualBasic;
 
 class Program
 {
     static void Main(string[] args)
     {
+        Random rand = new Random();
+        
+        //non-magic items
         Armor ironArmor= new Armor("Iron Armor", 10, 5);
+        Weapon ironSword = new Weapon("Iron Sword", 10, false);
+        Armor steelArmor = new Armor("Steel Armor", 25, 10);
+        Weapon steelSword = new Weapon("Steel Sword", 20, false);
+        //you'd die too quickly without these
+        Armor adamantineArmor = new Armor("Adamantine Armor", 75, 50);
+        Weapon adamantineSword = new Weapon("Adamantine Sword", 90, false);
+        
+        //magic items
         Armor robe = new Armor("Robe", 5, 10);
         Weapon wand = new Weapon("Wand", 5, true);
-        Weapon ironSword = new Weapon("Iron Sword", 10, false);
+        //or these
+        Armor superRobe = new Armor("Golden Robes of Ultimate Power", 65, 100);
+        Weapon superWand = new Weapon("Super Wand of Instant Vaporization", 65, true);
 
 
         Enemy dragon = new Enemy("Dragon", 1000, 100, 25, 25, 25, 100, 50, 5000);
+        Enemy troll = new Enemy("Troll", 200, 20, 15, 15, 5, 5, 15, 500, 10, [steelArmor, steelSword]);
+        Enemy currentEnemy;
 
         bool done=false;
         bool doneFighting;
@@ -41,12 +57,12 @@ class Program
             ""
         ];
 
-        Enemy[] enemies = [dragon];
+        Enemy[] enemies = [dragon, troll];
 
         Console.Write("Enter username: ");
         string username= Console.ReadLine();
 
-        Player user = new Player(username, 100, 10, 0, 0, 0, 0, 0, [ironSword, ironArmor, wand, robe]);
+        Player user = new Player(username, 100, 10, 0, 0, 0, 0, 0, [adamantineArmor, adamantineSword, superWand, superRobe]);
         Menu charMenu = new Menu(menuOptions);
         Combat combatMenu = new Combat(combatOptions, enemies);
         Menu inventoryMenu = new Menu(invOptions);
@@ -69,7 +85,28 @@ class Program
                     userIn=Console.ReadLine();
                     if (userIn == "1")
                     {
-                        Console.WriteLine("Oops, there's no monsters to fight please comeback another time.");
+                        currentEnemy = combatMenu.DisplayEnemy();
+                        while(user.GetHp() > 0 && currentEnemy.GetHp() > 0)
+                        {
+                            currentEnemy.DisplayStats();
+                            Console.Write("Do you attack (y/n)? ");
+                            userIn=Console.ReadLine();
+                            if (userIn.ToLower() == "n")
+                            {
+                                Console.WriteLine("Ok, you die. There is no room for pacifism here.");
+                                user.SetHp(0);
+                                doneFighting=true;
+                                done=true;
+                            }
+                            else if (userIn.ToLower() == "y")
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine("This is no time for nonsense! Input y or n.");
+                            }
+                        }
                     }
                     else if (userIn == "2")
                     {

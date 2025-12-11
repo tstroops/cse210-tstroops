@@ -17,10 +17,17 @@ class Player: Character
     
     public override void DisplayInventory()
     {
-        for (int i=0; i<_inventory.Count; i++)
+        if (_inventory.Count == 0)
         {
-            Console.Write($"{i+1}. ");
-            _inventory[i].DisplayStats();
+            Console.WriteLine("You do not have any items in your inventory");
+        }
+        else
+        {
+            for (int i=0; i<_inventory.Count; i++)
+            {
+                Console.Write($"{i+1}. ");
+                _inventory[i].DisplayStats();
+            }
         }
     }
     public override void DisplayStats()

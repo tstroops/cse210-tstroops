@@ -14,10 +14,14 @@ class Enemy :Character
     public Enemy(string name, int hp, int atk, int str, int agl, int intel, int def, int res, int xp, int regen, List<Equipment> inventory):base(name, hp, atk, str, agl, intel, def, res, xp, inventory)
     {
         SetRegen(regen);
+        Equip(0);
+        Equip(1);
     }
     public Enemy(string name, int hp, int atk, int str, int agl, int intel, int def, int res, int xp, List<Equipment> inventory):base(name, hp, atk, str, agl, intel, def, res, xp, inventory)
     {
         SetRegen(0);
+        Equip(0);
+        Equip(1);
     }
     public void SetRegen(int regen)
     {
@@ -30,6 +34,10 @@ class Enemy :Character
 
     public override void DisplayStats()
     {
+        Console.WriteLine($"{_name}");
+        Console.WriteLine($"Base Stats -- Strength: {_str} | Agility: {_agl} | Intelligence {_int}");
+        Console.WriteLine($"Combat Stats -- HP: {_hp} | Attack: {_atk} | Defense: {_def} | Resistance: {_res} | Regeneration: {_regen}");
+        DisplayInventory();
         Console.WriteLine();
     }
     public override void DisplayInventory()
@@ -40,9 +48,10 @@ class Enemy :Character
         }
         else
         {
-            foreach(Equipment item in _inventory)
+            for (int i=0; i<_inventory.Count; i++)
             {
-                continue;
+                Console.Write($"{i+1}. ");
+                _inventory[i].DisplayStats();
             }
         }
     }
