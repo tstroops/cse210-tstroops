@@ -11,6 +11,12 @@ class Armor : Equipment
         SetRes(res);
     }
 
+    public Armor(string name, bool equip, int def, int res):base(name, equip)
+    {
+        SetDef(def);
+        SetRes(res);
+    }
+
     public void SetDef(int def)
     {
         _defense=def;
@@ -19,9 +25,10 @@ class Armor : Equipment
     {
         _resistance=res;
     }
-    public override void Equip()
+
+    public override void DisplayStats()
     {
-        _isEquipped=true;
+        Console.WriteLine($"{_name} -- Defense: {_defense} | Resistance: {_resistance}");
     }
 
     public int GetDef()

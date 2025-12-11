@@ -1,5 +1,8 @@
-class Character
+using System.Security.Cryptography;
+
+abstract class Character
 {
+    protected string _name;
     protected int _hp;
     protected int _atk;
     protected int _str;
@@ -9,9 +12,13 @@ class Character
     protected int _res;
     protected int _xp;
     protected List<Equipment> _inventory;
+    protected Armor _equippedArmor;
+    protected Weapon _equippedWeapon;
 
-    public Character(int hp, int atk, int str, int agl, int intel, int def, int res, int xp, List<Equipment> inventory)
+
+    private void InitializeStats(string name, int hp, int atk, int str, int agl, int intel, int def, int res)
     {
+        SetName(name);
         SetHp(hp);
         SetAtk(atk);
         SetStr(str);
@@ -19,23 +26,31 @@ class Character
         SetInt(intel);
         SetDef(def);
         SetRes(res);
+    }
+    public Character(string name, int hp, int atk, int str, int agl, int intel, int def, int res, int xp)
+    {
+        InitializeStats(name, hp, atk, str, agl, intel, def, res);
         SetXp(xp);
+        SetInventory(null);
+    }
+    public Character(string name, int hp, int atk, int str, int agl, int intel, int def, int res, int xp, List<Equipment> inventory)
+    {
+        InitializeStats(name, hp, atk, str, agl, intel, def, res);
         SetInventory(inventory);
     }
 
-public Character(int hp, int atk, int str, int agl, int intel, int def, int res, List<Equipment> inventory)
+    public Character(string name, int hp, int atk, int str, int agl, int intel, int def, int res, List<Equipment> inventory)
     {
-        SetHp(hp);
-        SetAtk(atk);
-        SetStr(str);
-        SetAgl(agl);
-        SetInt(intel);
-        SetDef(def);
-        SetRes(res);
+        InitializeStats(name, hp, atk, str, agl, intel, def, res);
         SetXp(0);
         SetInventory(inventory);
     }
 
+    
+    public void SetName(string name)
+    {
+        _name=name;
+    }
     public void SetHp(int hp)
     {
         _hp=hp;
@@ -72,6 +87,11 @@ public Character(int hp, int atk, int str, int agl, int intel, int def, int res,
     public void SetInventory(List<Equipment> inventory)
     {
         _inventory=inventory;
+    }
+    
+    public string GetName()
+    {
+        return _name;
     }
     public int GetHp()
     {
@@ -111,16 +131,57 @@ public Character(int hp, int atk, int str, int agl, int intel, int def, int res,
         return _inventory;
     }
 
-    public void DisplayStats()
+    public Armor GetArmor()
+    {
+        return _equippedArmor;
+    }
+    public Weapon GetWeapon()
+    {
+        return _equippedWeapon;
+    }
+
+    public void UnequipArmor()
+    {
+        _equippedArmor=null;
+    }
+    public void UnequipWeapon()
+    {
+        _equippedWeapon=null;
+    }
+
+    public abstract void DisplayStats();
+    public abstract void DisplayInventory();
+    public void Attack(Character target)
     {
         
     }
-    public void DisplayInventory()
+
+    public void Equip(int index)
     {
-        
-    }
-    public void Attack()
-    {
-        
+        if (index >=0 && index < _inventory.Count)
+        {
+            if(_inventory[index] is Armor newArmor && _equippedArmor!=null)
+            {
+                SetDef(GetDef() - _equippedArmor.GetDef() + newArmor.GetDef());
+                SetRes(GetRes() - _equippedArmor.GetRes() + newArmor.GetRes());
+                _equippedArmor = newArmor;
+            }
+            else if (_inventory[index] is Armor armor2)
+            {
+                SetDef(GetDef() + armor2.GetDef());
+                SetRes(GetRes() + armor2.GetRes());
+                _equippedArmor = armor2;
+            }
+            else if(_inventory[index] is Weapon newWeapon && _equippedWeapon!=null)
+            {
+                SetAtk(GetAtk() - _equippedWeapon.GetDamage() + newWeapon.GetDamage());
+                _equippedWeapon=newWeapon;
+            }
+            else if (_inventory[index] is Weapon weapon2)
+            {
+                SetAtk(GetAtk() + weapon2.GetDamage());
+                _equippedWeapon = weapon2;
+            }
+        }
     }
 }

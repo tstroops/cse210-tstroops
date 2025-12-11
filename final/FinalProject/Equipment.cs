@@ -7,11 +7,17 @@ abstract class Equipment
 
     public Equipment(string name)
     {
-        _name=name;
-        _isEquipped=false;
+        SetName(name);
+        SetEquipStatus(false);
     }
 
-    public abstract void Equip();
+    public Equipment(string name, bool equip)
+    {
+        SetEquipStatus(equip);
+        SetName(name);
+    }
+
+    public abstract void DisplayStats();
 
     public bool GetEquipStatus()
     {
@@ -27,7 +33,7 @@ abstract class Equipment
         _name=name;
     }
 
-    public void setEquipStatus(bool equip)
+    public void SetEquipStatus(bool equip)
     {
         _isEquipped=equip;
     }

@@ -5,13 +5,19 @@ class Weapon : Equipment
 
     public Weapon(string name, int damage, bool isMagic) : base(name)
     {
-        _damage=damage;
-        _isMagic=isMagic;
+        SetDamage(damage);
+        SetIsMagic(isMagic);
     }
 
-    public override void Equip()
+    public Weapon(string name, bool equip, int damage, bool isMagic):base(name, equip)
     {
-        _isEquipped=true;
+        SetDamage(damage);
+        SetIsMagic(isMagic);
+    }
+
+    public override void DisplayStats()
+    {
+        Console.WriteLine($"{_name} -- Damage: {_damage} | Magic: {_isMagic}");
     }
 
     public int GetDamage()
