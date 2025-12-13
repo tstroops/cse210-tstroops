@@ -35,7 +35,7 @@ class Enemy :Character
     public override void DisplayStats()
     {
         Console.WriteLine($"{_name}");
-        Console.WriteLine($"Base Stats -- Strength: {_str} | Agility: {_agl} | Intelligence {_int}");
+        Console.WriteLine($"Base Stats -- Strength: {_str} | Agility: {_agl} | Intelligence {_int} | XP: {_xp}");
         Console.WriteLine($"Combat Stats -- HP: {_hp} | Attack: {_atk} | Defense: {_def} | Resistance: {_res} | Regeneration: {_regen}");
         DisplayInventory();
         Console.WriteLine();

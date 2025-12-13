@@ -4,6 +4,11 @@ using Microsoft.VisualBasic;
 
 class Program
 {
+    public static void Reset(Enemy enemy, Player user)
+    {
+        user.SetHp(user.GetMax());
+        enemy.SetHp(enemy.GetMax());
+    }
     static void Main(string[] args)
     {
         Random rand = new Random();
@@ -32,6 +37,7 @@ class Program
         bool done=false;
         bool doneFighting;
         bool doneMng;
+        bool dead;
         string userIn;
         int index;
         
@@ -62,7 +68,7 @@ class Program
         Console.Write("Enter username: ");
         string username= Console.ReadLine();
 
-        Player user = new Player(username, 100, 10, 0, 0, 0, 0, 0, [adamantineArmor, adamantineSword, superWand, superRobe]);
+        Player user = new Player(username, 100, 10, 10, 10, 10, 0, 0, [adamantineArmor, adamantineSword, superWand, superRobe]);
         Menu charMenu = new Menu(menuOptions);
         Combat combatMenu = new Combat(combatOptions, enemies);
         Menu inventoryMenu = new Menu(invOptions);
@@ -86,7 +92,8 @@ class Program
                     if (userIn == "1")
                     {
                         currentEnemy = combatMenu.DisplayEnemy();
-                        while(user.GetHp() > 0 && currentEnemy.GetHp() > 0)
+                        dead=false;
+                        while(!dead)
                         {
                             currentEnemy.DisplayStats();
                             Console.Write("Do you attack (y/n)? ");
@@ -100,11 +107,34 @@ class Program
                             }
                             else if (userIn.ToLower() == "y")
                             {
-                                continue;
+                                if (user.GetWeapon() != null)
+                                {
+                                    user.Attack(currentEnemy);
+                                    Console.WriteLine($"You attack the monster with your {user.GetWeapon().GetName()}.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You punch the monster.");
+                                }
+                                currentEnemy.Attack(user);
+                                Console.WriteLine($"The {currentEnemy.GetName()} attacks you. Ouchies!");
                             }
                             else
                             {
                                 Console.WriteLine("This is no time for nonsense! Input y or n.");
+                            }
+                            if (user.GetHp()<= 0)
+                            {
+                                dead=true;
+                                Reset(currentEnemy, user);
+                                Console.WriteLine("You died but got better.");
+                            }
+                            if (currentEnemy.GetHp() <= 0)
+                            {
+                                dead=true;
+                                user.GainXp(currentEnemy.GetXp());
+                                Reset(currentEnemy, user);
+                                Console.WriteLine($"You killed the {currentEnemy.GetName()} and gained {currentEnemy.GetXp()} XP!");
                             }
                         }
                     }

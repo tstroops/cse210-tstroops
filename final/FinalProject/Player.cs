@@ -1,3 +1,5 @@
+using System.Data;
+
 class Player: Character
 {
     private int _level;
@@ -13,6 +15,11 @@ class Player: Character
     public int GetLevel()
     {
         return _level;
+    }
+
+    public void GainXp(int gain)
+    {
+        _xp+=gain;
     }
     
     public override void DisplayInventory()

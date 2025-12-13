@@ -4,6 +4,7 @@ abstract class Character
 {
     protected string _name;
     protected int _hp;
+    protected int _maxHp;
     protected int _atk;
     protected int _str;
     protected int _agl;
@@ -19,6 +20,7 @@ abstract class Character
     private void InitializeStats(string name, int hp, int atk, int str, int agl, int intel, int def, int res)
     {
         SetName(name);
+        _maxHp=hp;
         SetHp(hp);
         SetAtk(atk);
         SetStr(str);
@@ -36,6 +38,7 @@ abstract class Character
     public Character(string name, int hp, int atk, int str, int agl, int intel, int def, int res, int xp, List<Equipment> inventory)
     {
         InitializeStats(name, hp, atk, str, agl, intel, def, res);
+        SetXp(xp);
         SetInventory(inventory);
     }
 
@@ -54,6 +57,14 @@ abstract class Character
     public void SetHp(int hp)
     {
         _hp=hp;
+    }
+    public void GainHp(int gain)
+    {
+        _hp+=gain;
+    }
+    public void LoseHp(int loss)
+    {
+        _hp-=loss;
     }
     public void SetAtk(int atk)
     {
@@ -96,6 +107,10 @@ abstract class Character
     public int GetHp()
     {
         return _hp;
+    }
+    public int GetMax()
+    {
+        return _maxHp;
     }
     public int GetAtk()
     {
@@ -153,7 +168,24 @@ abstract class Character
     public abstract void DisplayInventory();
     public void Attack(Character target)
     {
-        
+        int damage;
+        if (_equippedWeapon!=null && _equippedWeapon.IsItMagic())
+        {
+            damage=_atk-target.GetRes();
+        }
+        else
+        {
+            damage=_atk-target.GetDef();
+        }
+        if (damage < 0)
+        {
+            return;
+        }
+        target.LoseHp(damage);
+        if(target is Enemy enemy)
+        {
+            enemy.GainHp(enemy.GetRegen());
+        }
     }
 
     public void Equip(int index)
