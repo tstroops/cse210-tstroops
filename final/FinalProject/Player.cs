@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Common;
 
 class Player: Character
 {
@@ -66,5 +67,13 @@ class Player: Character
         Console.WriteLine($"{_name} -- Level: {_level} | XP: {_xp}");
         Console.WriteLine($"Attributes -- Strength: {_str} | Agility: {_agl} | Intelligence: {_int}");
         Console.WriteLine($"Combat Stats -- HP: {_hp} | Atk: {_atk} | Def: {_def} | Res: {_res}");
+    }
+
+    public void Loot(List<Equipment> loot)
+    {
+        foreach(Equipment item in loot)
+        {
+            _inventory.Add(item);
+        }
     }
 }

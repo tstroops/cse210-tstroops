@@ -72,7 +72,7 @@ class Program
             ""
         };
 
-        Enemy[] enemies = [dragon, troll];
+        Enemy[] enemies = [troll];
 
         Console.Write("Enter username: ");
         string username= Console.ReadLine();
@@ -82,6 +82,8 @@ class Program
         Combat combatMenu = new Combat(combatOptions, enemies);
         Menu inventoryMenu = new Menu(invOptions);
         Menu levelUp = new Menu(levelOptions);
+
+
         while (!done)
         {
             doneFighting=false;
@@ -145,6 +147,24 @@ class Program
                                 user.GainXp(currentEnemy.GetXp());
                                 Reset(currentEnemy, user);
                                 Console.WriteLine($"You killed the {currentEnemy.GetName()} and gained {currentEnemy.GetXp()} XP!");
+                                if (currentEnemy.GetInventory() != null)
+                                {
+                                    Console.Write($"Loot the {currentEnemy}? ");
+                                    userIn=Console.ReadLine();
+                                    if (userIn.ToLower() == "y")
+                                    {
+                                        user.Loot(currentEnemy.GetInventory());
+                                    }
+                                    else if (userIn.ToLower() == "n")
+                                    {
+                                        Console.WriteLine("OK!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("We didn't understand that. Please input a y or n.");
+                                    }
+                                }
+                                
                             }
                         }
                     }
