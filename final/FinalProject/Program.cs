@@ -107,7 +107,11 @@ class Program
                         dead=false;
                         while(!dead)
                         {
+                            
                             currentEnemy.DisplayStats();
+                            Console.WriteLine();
+                            user.DisplayStats();
+
                             Console.Write("Do you attack (y/n)? ");
                             userIn=Console.ReadLine();
                             if (userIn.ToLower() == "n")
