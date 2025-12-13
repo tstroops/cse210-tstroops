@@ -171,11 +171,11 @@ abstract class Character
         int damage;
         if (_equippedWeapon!=null && _equippedWeapon.IsItMagic())
         {
-            damage=_atk-target.GetRes();
+            damage=_atk + _int - target.GetAgl() - target.GetRes();
         }
         else
         {
-            damage=_atk-target.GetDef();
+            damage=_atk + _str - target.GetAgl() - target.GetDef();
         }
         if (damage < 0)
         {

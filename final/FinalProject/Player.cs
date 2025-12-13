@@ -21,6 +21,30 @@ class Player: Character
     {
         _xp+=gain;
     }
+    public void LevelUp(string stat)
+    {
+        stat=stat.ToLower();
+        if (_xp >= 300)
+        {
+            _level+=1;
+            _maxHp+=10;
+            _hp=_maxHp;
+            _xp-=300;
+            if (stat == "strength" || stat=="1")
+            {
+                _str++;
+            }
+            else if (stat == "agility" || stat=="2")
+            {
+                _agl++;
+            }
+            else if (stat == "intelligence" || stat=="3")
+            {
+                _int++;
+            }
+        }
+
+    }
     
     public override void DisplayInventory()
     {

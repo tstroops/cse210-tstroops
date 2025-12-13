@@ -62,6 +62,15 @@ class Program
             "3. Quit Inventory Manager",
             ""
         ];
+        string[] levelOptions =
+        {
+            "You've leveled up!",
+            "",
+            "1. Strength",
+            "2. Agility",
+            "3. Intelligence",
+            ""
+        };
 
         Enemy[] enemies = [dragon, troll];
 
@@ -72,6 +81,7 @@ class Program
         Menu charMenu = new Menu(menuOptions);
         Combat combatMenu = new Combat(combatOptions, enemies);
         Menu inventoryMenu = new Menu(invOptions);
+        Menu levelUp = new Menu(levelOptions);
         while (!done)
         {
             doneFighting=false;
@@ -156,7 +166,17 @@ class Program
             }
             else if (userIn == "2")
             {
-                Console.WriteLine("It seems you don't have enough experience to level up. Please come back after killing more monsters");
+                if (user.GetXp() >= 300)
+                {
+                    levelUp.Display();
+                    Console.Write("Enter the attribute you wish to increase: ");
+                    userIn=Console.ReadLine();
+                    user.LevelUp(userIn);
+                }
+                else
+                {
+                    Console.WriteLine("It seems you don't have enough experience to level up. Please come back after killing more monsters");
+                }
             }
             else if (userIn == "3")
             {
